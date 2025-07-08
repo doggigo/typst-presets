@@ -1,20 +1,29 @@
-#import "@preview/quick-maths:0.2.1" : shorthands
+#import "@preview/quick-maths:0.2.1": shorthands
 
 
-#let doc_aufranc(title: none, fontsize: 11pt,doc) = {
+#let doc_aufranc(title: none, fontsize: 11pt, bar: true, page-numbering: "I", doc) = {
+  set heading(numbering: "1.1.")
   set text(font: "New Computer Modern", size: fontsize, lang: "fr")
   set linebreak(justify: true)
   set par(leading: 0.8em, spacing: 1.2em, justify: true, linebreaks: "optimized")
   show raw: set text(font: "New Computer Modern")
-  set page(
-    paper: "a4",
-    header: align(right)[
+  let hd = [
+    #align(right)[
       #set text(11pt)
       #title
-      #line(length:100%, stroke: 1pt)
-    ],
-    numbering: "I"
+    ]
+    #if bar {
+      line(length: 100%, stroke: .5pt)
+    }
+  ]
+
+  set page(
+    paper: "a4",
+    header: hd,
+    numbering: page-numbering,
   )
+
+  show smallcaps: h => text(size:1.1em)[#h]
 
   set grid(
     row-gutter: 1.5em,
@@ -22,11 +31,13 @@
   )
 
   show: shorthands.with(
+    ($+-$, $plus.minus$),
+    ($<==$, arrow.l.double),
     ($emptyset$, $diameter$),
-    ($<=$,sym.lt.eq.slant),
-    ($>=$,sym.gt.eq.slant),
-    ($(->$, $arrow.r.hook$)
-)
+    ($<=$, sym.lt.eq.slant),
+    ($>=$, sym.gt.eq.slant),
+    ($(->$, $arrow.r.hook$),
+  )
 
   doc
 }
